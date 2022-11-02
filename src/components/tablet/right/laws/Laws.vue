@@ -7,10 +7,10 @@ import TableBodyCell from '../../table/TableBodyCell.vue';
 import TableContainer from '../../table/TableContainer.vue';
 import TableHead from '../../table/TableHead.vue';
 import TableHeadRow from '../../table/TableHeadRow.vue';
-import { useEmployeeStore } from '@/stores/employees';
+import { useLawStore } from '@/stores/laws';
 
-const tableHead = ['Employee Name', 'Rank', 'Activity', 'Status'];
-const store = useEmployeeStore();
+const tableHead = ['Law', 'Price', 'Jailtime'];
+const store = useLawStore();
 </script>
 
 <template>
@@ -29,30 +29,17 @@ const store = useEmployeeStore();
 				</TableHeadRow>
 			</TableHead>
 			<TableBody>
-				<TableBodyRow v-for="emp in store.employees">
+				<TableBodyRow v-for="law in store.laws">
 					<TableBodyCell>
-						{{emp.name}}
+						<p>
+							{{law.text}}
+						</p>
 					</TableBodyCell>
 					<TableBodyCell>
-						{{emp.rank}}
+						$ {{law.fee}}
 					</TableBodyCell>
 					<TableBodyCell>
-						<div v-if="emp.activity" class="flex items-center gap-1">
-							<div class="w-2 h-2 rounded-full bg-[#8ED336] border-2 border-[#30421a]"></div>
-							<div>Online</div>	
-						</div>
-						<div v-else class="flex items-center gap-1">
-							<div class="w-2 h-2 rounded-full bg-[#c84040] border-2 border-[#3f1d1d]"></div>
-							<div>Offline</div>	
-						</div>
-					</TableBodyCell>
-					<TableBodyCell>
-						<div v-if="emp.status" class="text-[#8ED336]">
-							On-Duty
-						</div>
-						<div v-else class="opacity-60">
-							Off-Duty
-						</div>
+						{{law.jailText}}
 					</TableBodyCell>
 				</TableBodyRow>
 			</TableBody>

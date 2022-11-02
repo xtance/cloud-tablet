@@ -19,7 +19,7 @@ export const tabs: Tab[] = [
 ];
 
 export const useTabStore = defineStore({
-	id: 'tabstore',
+	id: 'tabStore',
 	state: () => ({ currentTab: tabs[0] }),
 	actions: {
 		setTab(newTab: Tab) {

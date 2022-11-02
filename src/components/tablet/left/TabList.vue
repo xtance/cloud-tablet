@@ -4,7 +4,7 @@ import { tabs, useTabStore } from '@/stores/tab';
 import { onMounted } from 'vue';
 
 /* Debug the needed tab */
-onMounted(() => useTabStore().setTab(tabs[4]));
+onMounted(() => useTabStore().setTab(tabs[3]));
 </script>
 
 <template>

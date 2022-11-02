@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import Title from '../../misc/Title.vue';
-import Table from '../../misc/Table.vue';
+import TableBody from '../../table/TableBody.vue';
+import TableBodyRow from '../../table/TableBodyRow.vue';
+import TableHeadCell from '../../table/TableHeadCell.vue';
+import TableBodyCell from '../../table/TableBodyCell.vue';
+import TableContainer from '../../table/TableContainer.vue';
+import TableHead from '../../table/TableHead.vue';
+import TableHeadRow from '../../table/TableHeadRow.vue';
 
 const personen = {
 	heads:  ['Vorname', 'Nachname', 'ID', 'Geschlecht', 'Geburtstag'],
@@ -49,16 +55,45 @@ const fahrzeuge = {
 		<Title
 			text="Personen"
 		/>
-		<Table
-			:heads="personen.heads"
-			:rows="personen.rows"
-		/>
+
+		<TableContainer>
+			<TableHead>
+				<TableHeadRow v-for="head in personen.heads">
+					<TableHeadCell>
+						{{head}}
+					</TableHeadCell>
+				</TableHeadRow>
+			</TableHead>
+			<TableBody css="max-height: 235px">
+				<TableBodyRow v-for="rows in personen.rows">
+					<TableBodyCell v-for="row in rows">
+						{{row}}
+					</TableBodyCell>
+				</TableBodyRow>
+			</TableBody>
+		</TableContainer>
+
+		
 		<Title
 			text="Fahrzeuge"
 		/>
-		<Table
-			:heads="fahrzeuge.heads"
-			:rows="fahrzeuge.rows"
-		/>
+
+		<TableContainer>
+			<TableHead>
+				<TableHeadRow v-for="head in fahrzeuge.heads">
+					<TableCell>
+						{{head}}
+					</TableCell>
+				</TableHeadRow>
+			</TableHead>
+			<TableBody css="max-height: 235px">
+				<TableBodyRow v-for="rows in fahrzeuge.rows">
+					<TableBodyCell v-for="row in rows">
+						{{row}}
+					</TableBodyCell>
+				</TableBodyRow>
+			</TableBody>
+		</TableContainer>
+
 	</main>
 </template>

@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import TableBody from './TableBody.vue';
 import TableBodyRow from './TableBodyRow.vue';
-import TableCell from './TableCell.vue';
+import TableBodyCell from './TableBodyCell.vue';
+import TableHeadCell from './TableHeadCell.vue';
 import TableContainer from './TableContainer.vue';
 import TableHead from './TableHead.vue';
 import TableHeadRow from './TableHeadRow.vue';
@@ -32,16 +33,16 @@ const testData = {
 	<TableContainer>
 		<TableHead>
 			<TableHeadRow v-for="head in testData.heads">
-				<TableCell>
+				<TableHeadCell>
 					{{head}}
-				</TableCell>
+				</TableHeadCell>
 			</TableHeadRow>
 		</TableHead>
 		<TableBody>
 			<TableBodyRow v-for="rows in testData.rows">
-				<TableCell v-for="row in rows">
+				<TableBodyCell v-for="row in rows">
 					{{row}}
-				</TableCell>
+				</TableBodyCell>
 			</TableBodyRow>
 		</TableBody>
 	</TableContainer>
