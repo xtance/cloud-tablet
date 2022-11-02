@@ -81,9 +81,9 @@ const fahrzeuge = {
 		<TableContainer>
 			<TableHead>
 				<TableHeadRow v-for="head in fahrzeuge.heads">
-					<TableCell>
+					<TableHeadCell>
 						{{head}}
-					</TableCell>
+					</TableHeadCell>
 				</TableHeadRow>
 			</TableHead>
 			<TableBody css="max-height: 235px">

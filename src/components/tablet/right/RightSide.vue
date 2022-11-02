@@ -12,7 +12,7 @@ const style = `background-image: url(${Background});`;
 
 <template>
 	<div
-		class="p-4 flex-grow h-full px-[30px] pt-[48px] bg-no-repeat bg-right-bottom bg-cover overflow-y-scroll"
+		class="p-4 w-[792px] h-full px-[30px] pt-[48px] bg-no-repeat bg-right-bottom bg-cover overflow-y-scroll"
 		:style="style"
 	>
 		<TabContainer :thisTab="wanted">

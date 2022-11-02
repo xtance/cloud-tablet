@@ -7,38 +7,58 @@ import TableBodyCell from '../../table/TableBodyCell.vue';
 import TableContainer from '../../table/TableContainer.vue';
 import TableHead from '../../table/TableHead.vue';
 import TableHeadRow from '../../table/TableHeadRow.vue';
-import { useLawStore } from '@/stores/laws';
+import Bar from '../../bar/Bar.vue';
 
-const tableHead = ['Law', 'Price', 'Jailtime'];
+import { useLawStore } from '@/stores/laws';
+import { ref } from 'vue';
+import { computed } from '@vue/reactivity';
+
 const store = useLawStore();
+const buttons = ['All', 'Straßenverkehrsordnung', 'Drogendialekte', 'Drogendialekte', 'Drogendialekte', 'Drogendialekte', 'Drogendialekte', 'Drogendialekte', 'Drogendialekte', 'Drogendialekte', ];
+
+const activeIndex = ref(0);
+const onButtonChange = (index: number) => activeIndex.value = index;
+const laws = computed(() => activeIndex.value ? store.laws.filter(law => law.type === buttons[activeIndex.value]) : store.laws)
 </script>
 
 <template>
 	<main>
 		<Title
-			text="Employees"
+			text="Gesetze"
 			subtitle="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt"
+		/>
+
+		<Bar
+			:buttons="buttons"
+			:active="activeIndex"
+			@change="onButtonChange"
 		/>
 
 		<TableContainer>
 			<TableHead>
-				<TableHeadRow v-for="head in tableHead">
-					<TableHeadCell>
-						{{head}}
+				<TableHeadRow>
+					<TableHeadCell css="width: 60%">
+						Law
+					</TableHeadCell>
+					<TableHeadCell css="width: 15%">
+						Price
+					</TableHeadCell>
+					<TableHeadCell css="width: 25%">
+						Jailtime
 					</TableHeadCell>
 				</TableHeadRow>
 			</TableHead>
 			<TableBody>
-				<TableBodyRow v-for="law in store.laws">
-					<TableBodyCell>
-						<p>
+				<TableBodyRow v-for="law in laws">
+					<TableBodyCell css="width: 60%">
+						<p class="whitespace-normal">
 							{{law.text}}
 						</p>
 					</TableBodyCell>
-					<TableBodyCell>
+					<TableBodyCell css="width: 15%">
 						$ {{law.fee}}
 					</TableBodyCell>
-					<TableBodyCell>
+					<TableBodyCell css="width: 25%">
 						{{law.jailText}}
 					</TableBodyCell>
 				</TableBodyRow>

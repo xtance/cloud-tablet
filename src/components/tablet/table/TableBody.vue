@@ -6,8 +6,8 @@ defineProps<{
 
 <!-- Table body -->
 <template>
-	<div class="overflow-y-hidden">
-		<div class="overflow-y-scroll px-4" :style="css">
+	<div class="overflow-y-hidden overflow-x-clip">
+		<div class="overflow-y-auto px-4" :style="css">
 			<slot></slot>
 		</div>
 	</div>
