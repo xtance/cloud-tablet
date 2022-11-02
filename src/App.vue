@@ -9,10 +9,5 @@ import { RouterLink, RouterView } from 'vue-router'
         <RouterLink to="/about">About</RouterLink>
       </nav>
 	</header>-->
-	<main class="
-		fixed w-screen h-screen bg-[#202020]
-		flex justify-center items-center
-	">
-		<RouterView />
-	</main>
+	<RouterView />
 </template>

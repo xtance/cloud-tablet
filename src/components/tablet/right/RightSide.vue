@@ -2,13 +2,21 @@
 import { tabs } from '@/stores/tab';
 import TabContainer from './TabContainer.vue';
 import Wanted from './wanted/Wanted.vue';
-const [ citizen, vehicle, wanted, laws ] = tabs;
+import Employees from './employees/Employees.vue';
+import Background from '@/assets/tablet/Background.png';
+
+const [ citizen, vehicle, wanted, laws, employees ] = tabs;
+const style = `background-image: url(${Background});`;
 </script>
 
 <template>
-	<div class="bg-[#161616] p-4 flex-grow h-full px-[30px] py-[48px]">
+	<div
+		class="p-4 flex-grow h-full px-[30px] py-[48px] bg-no-repeat bg-right-bottom bg-cover"
+		:style="style"
+	>
 		<TabContainer :thisTab="wanted">
 			<Wanted />
+			<Employees />
 		</TabContainer>
 	</div>
 </template>

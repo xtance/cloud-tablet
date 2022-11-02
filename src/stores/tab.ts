@@ -1,4 +1,3 @@
-import { ref } from 'vue';
 import { defineStore } from 'pinia';
 
 import Citizen from '@/assets/tablet/Citizen.png';
@@ -12,11 +11,11 @@ export class Tab {
 }
 
 export const tabs: Tab[] = [
-	new Tab('Citizen search', Citizen),
-	new Tab('Vehicle search', Vehicle),
-	new Tab('Wanted', Wanted),
-	new Tab('Laws', Laws),
-	new Tab('Employees', Employees),
+	new Tab('Personensuche', Citizen),
+	new Tab('Fahrzeugsuche', Vehicle),
+	new Tab('Gesuchte Personen', Wanted),
+	new Tab('Gesetze', Laws),
+	new Tab('Angestellte', Employees),
 ];
 
 export const useTabStore = defineStore({
