@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Title from '../../misc/Title.vue';
 import Table from '../../misc/Table.vue';
+import TableExample from '../../table/TableExample.vue';
 
 const personen = {
 	heads:  ['Vorname', 'Nachname', 'ID', 'Geschlecht', 'Geburtstag'],
@@ -25,9 +26,10 @@ const personen = {
 			text="Employees"
 			subtitle="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt"
 		/>
-		<Table
+		<TableExample></TableExample>
+		<!-- <Table
 			:heads="personen.heads"
 			:rows="personen.rows"
-		/>
+		/> -->
 	</main>
 </template>

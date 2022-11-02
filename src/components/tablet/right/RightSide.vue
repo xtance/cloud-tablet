@@ -16,6 +16,8 @@ const style = `background-image: url(${Background});`;
 	>
 		<TabContainer :thisTab="wanted">
 			<Wanted />
+		</TabContainer>
+		<TabContainer :thisTab="employees">
 			<Employees />
 		</TabContainer>
 	</div>
