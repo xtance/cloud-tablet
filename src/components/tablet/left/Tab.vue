@@ -5,17 +5,11 @@ const tabStore = useTabStore();
 defineProps<{
 	thisTab: Tab,
 }>()
-
-function log(tab: Tab){
-	tabStore.setTab(tab);
-	tabStore.currentTab = tab;
-	console.log('this tab', tab.icon, 'cur tab', tabStore.currentTab.name);
-}
 </script>
 
 <template>
 	<div
-		@click="log(thisTab)"
+		@click="tabStore.setTab(thisTab)"
 		class="h-[50px] flex items-center rounded-[6px] duration-200"
 		:class="tabStore.currentTab.name === thisTab.name ? 'bg-[#4052C8]': 'bg-transparent'"
 	>

@@ -1,34 +1,10 @@
+@import 'fonts.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-    font-family: 'SF-Pro-Text-Light';
-    src: url('fonts/SF-Pro-Text-Light.otf') format('opentype');
-}
-
-@font-face {
-    font-family: 'SF-Pro-Text-Thin';
-    src: url('fonts/SF-Pro-Text-Thin.otf') format('opentype');
-}
-
-@font-face {
-    font-family: 'SF-Pro-Text-Regular';
-    src: url('fonts/SF-Pro-Text-Regular.otf') format('opentype');
-}
-
-@font-face {
-    font-family: 'SF-Pro-Text-Medium';
-    src: url('fonts/SF-Pro-Text-Medium.otf') format('opentype');
-}
-
-@font-face {
-    font-family: 'SF-Pro-Text-Bold';
-    src: url('fonts/SF-Pro-Text-Bold.otf') format('opentype');
-}
-
 *, *:before, *:after, button, input, select, textarea {
-    font-family: 'SF-Pro-Text-Regular';
+    font-family: 'SF Pro Text';
     box-sizing: border-box;
     scroll-behavior: smooth;
     -webkit-tap-highlight-color: transparent;
@@ -41,25 +17,3 @@
 *:focus {
     outline: none !important;
 }
-
-.light {
-    font-family: 'SF-Pro-Text-Light';
-}
-
-.thin {
-    font-family: 'SF-Pro-Text-Thin';
-}
-
-.regular {
-    font-family: 'SF-Pro-Text-Regular';
-}
-
-.medium {
-    font-family: 'SF-Pro-Text-Medium';
-}
-
-.bold {
-    font-family: 'SF-Pro-Text-Bold';
-}
-
-

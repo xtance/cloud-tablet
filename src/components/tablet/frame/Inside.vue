@@ -5,6 +5,7 @@
 		w-[1035px] h-[776px]
 		overflow-hidden
 		relative
+		select-none
 	">
 		<slot></slot>
 	</div>
