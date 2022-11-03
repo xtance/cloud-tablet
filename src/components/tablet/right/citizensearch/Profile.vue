@@ -3,7 +3,28 @@ import InfoImage from '../../infopanel/InfoImage.vue';
 import InfoPanelContainer from '../../infopanel/InfoPanelContainer.vue';
 import InfoText from '../../infopanel/InfoText.vue';
 import InfoButtons from '../../infopanel/InfoButtons.vue';
+import InfoLicenses from '../../infopanel/InfoLicenses.vue';
+import NoImage from '@/assets/tablet/NoImage.png';
+import { License } from './License';
+import { ref } from 'vue';
+
+
 import type { Person } from './Person';
+
+const licenses = ref<License[]>([]);
+licenses.value = getPlayerLicenses();
+
+/* This also should fetch licenses from somewhere */
+function getPlayerLicenses(){
+	return [
+		new License('car', true),
+		new License('truck', true),
+		new License('scooter', false),
+		new License('ship', false),
+		new License('plane', true),
+		new License('weapon', false),
+	]
+}
 
 
 defineProps<{
@@ -20,7 +41,7 @@ defineProps<{
 
 			<!-- Image + info -->
 			<div class="flex justify-between">
-				<InfoImage src="" />
+				<InfoImage :src="NoImage" />
 				<div class="pl-4">
 					<InfoText desc="Vorname" :text="person.firstName" />
 					<InfoText desc="Geburtsdatum" :text="person.bornDate" />
@@ -36,9 +57,7 @@ defineProps<{
 			</div>
 
 			<!-- Licenses -->
-			<div>
-
-			</div>
+			<InfoLicenses :licenses="licenses" />
 		</div>
 
 		<!-- Buttons on the right -->

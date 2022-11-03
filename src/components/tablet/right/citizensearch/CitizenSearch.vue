@@ -36,11 +36,12 @@ onMounted(() => {
 	currentPerson.value = (new Person('Matce', 'Fuksusauskas', false, '01.01.1999', false));
 });
 
+/* Literally an example of how not to code */
 const history = computed(() => {
 	const map = new Map<string, () => void>();
-	map.set('Personensuche', () => currentPerson.value = null);
-	if (currentPerson.value) map.set(`${currentPerson.value.firstName} ${currentPerson.value.lastName}`, () => vehicles.value = null);
-	if (vehicles.value) map.set(`Fahrzeuge`, () => currentVehicle.value = null);
+	map.set('Personensuche', () => { currentPerson.value = null, vehicles.value = null, currentVehicle.value = null });
+	if (currentPerson.value) map.set(`${currentPerson.value.firstName} ${currentPerson.value.lastName}`, () => { vehicles.value = null, currentVehicle.value = null });
+	if (vehicles.value) map.set(`Fahrzeuge`, () => { currentVehicle.value = null });
 	if (currentVehicle.value) map.set(`${currentVehicle.value.name}`, () => {});
 	return map;
 });
@@ -66,6 +67,12 @@ buttons.set('Lizenz entnehmen', () => {});
 <template>
 
 	<div v-if="vehicles">
+
+		<HistoryBar
+			title="Personensuche"
+			:history="history"
+		/>
+
 		<TableContainer v-if="vehicles.length">
 			<TableHead>
 				<TableHeadRow v-for="head in ['Fahrzeug', 'Fahrzeug-ID', 'Kennzeichen', 'Status']">

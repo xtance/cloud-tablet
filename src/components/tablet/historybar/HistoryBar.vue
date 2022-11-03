@@ -10,7 +10,7 @@
 	<div class="font-bold text-[16px]">
 		{{title}}
 	</div>
-	<div class="flex">
+	<div class="flex mb-[25px]">
 		<div
 			class="flex items-center cursor-pointer"
 			v-for="([name, fun], index) in history"
