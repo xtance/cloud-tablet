@@ -15,7 +15,7 @@ import { Person } from './Person';
 import Profile from './Profile.vue';
 import HistoryBar from '../../historybar/HistoryBar.vue';
 import { computed } from '@vue/reactivity';
-import type { Vehicle } from './Vehicle';
+import { Vehicle } from './Vehicle';
 
 
 function onSubmit(text: string){
@@ -44,6 +44,22 @@ const history = computed(() => {
 	if (currentVehicle.value) map.set(`${currentVehicle.value.name}`, () => {});
 	return map;
 });
+
+function getPersonVehicles(){
+	return [
+		new Vehicle('Porsche Taycan', 412561, '41215854', true),
+		new Vehicle('Porsche Taycan', 412561, '41215854', false),
+		new Vehicle('Porsche Taycan', 412561, '41215854', false),
+		new Vehicle('Porsche Taycan', 412561, '41215854', true),
+		new Vehicle('Porsche Taycan', 412561, '41215854', true),
+	]
+}
+
+const buttons = new Map<string, () => void>();
+buttons.set('Status Andern', () => {});
+buttons.set('Fahrzeuge', () => vehicles.value = getPersonVehicles());
+buttons.set('Akte vergeben', () => {});
+buttons.set('Lizenz entnehmen', () => {});
 
 </script>
 
@@ -93,6 +109,7 @@ const history = computed(() => {
 		<Profile
 			v-if="currentPerson"
 			:person="currentPerson"
+			:buttons="buttons"
 		/>
 
 	</div>
