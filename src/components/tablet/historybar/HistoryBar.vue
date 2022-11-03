@@ -7,7 +7,7 @@
 </script>
 
 <template>
-	<div class="font-bold text-[18px]">
+	<div class="font-bold text-[16px]">
 		{{title}}
 	</div>
 	<div class="flex">

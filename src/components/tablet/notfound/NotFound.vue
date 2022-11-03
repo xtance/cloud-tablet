@@ -1,5 +1,9 @@
 <script setup lang="ts">
 	import Search from '@/assets/tablet/Search.png';
+	defineProps<{
+		title: string,
+		subtitle: string,
+	}>();
 </script>
 
 <template>
@@ -12,11 +16,10 @@
 	<div
 		class="text-center font-bold text-[18px] my-[10px]"
 	>
-		Keine Person gefunden
+		{{title}}
 	</div>
 
-	<p class="text-center text-[12px] opacity-60">
-		Wir konnten leider mit Ihrer Suche <br>
-		keine Person finden.
+	<p class="text-center text-[12px] opacity-60 px-[260px]">
+		{{subtitle}}
 	</p>
 </template>

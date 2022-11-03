@@ -49,7 +49,41 @@ const history = computed(() => {
 
 <template>
 
-	<div v-if="currentPerson">
+	<div v-if="vehicles">
+		<TableContainer v-if="vehicles.length">
+			<TableHead>
+				<TableHeadRow v-for="head in ['Fahrzeug', 'Fahrzeug-ID', 'Kennzeichen', 'Status']">
+					<TableHeadCell>
+						{{head}}
+					</TableHeadCell>
+				</TableHeadRow>
+			</TableHead>
+			<TableBody>
+				<TableBodyRow v-for="vehicle in vehicles" @click="currentVehicle = vehicle" :css="vehicle.status ? 'background-color: #C84040' : ''">
+					<TableBodyCell>
+						{{vehicle.name}}
+					</TableBodyCell>
+					<TableBodyCell>
+						#{{vehicle.id}}
+					</TableBodyCell>
+					<TableBodyCell>
+						{{vehicle.numberPlate}}
+					</TableBodyCell>
+					<TableBodyCell>
+						{{vehicle.status ? 'Gesucht' : 'Nicht gesucht'}}
+					</TableBodyCell>
+				</TableBodyRow>
+			</TableBody>
+		</TableContainer>
+
+		<NotFound
+			v-else
+			title="Keine Vehicle gefunden"
+			subtitle="Wir konnten leider mit Ihrer Suche keine Vehicle finden."
+		/>
+	</div>
+
+	<div v-else-if="currentPerson">
 
 		<HistoryBar
 			title="Personenakte"
@@ -77,7 +111,7 @@ const history = computed(() => {
 				</TableHeadRow>
 			</TableHead>
 			<TableBody>
-				<TableBodyRow v-for="person in persons" :css="person.wantedStatus ? 'background-color: #C84040' : ''">
+				<TableBodyRow v-for="person in persons" @click="currentPerson = person" :css="person.wantedStatus ? 'background-color: #C84040' : ''">
 					<TableBodyCell>
 						{{person.firstName}}
 					</TableBodyCell>
@@ -97,7 +131,11 @@ const history = computed(() => {
 			</TableBody>
 		</TableContainer>
 
-		<NotFound v-else />
+		<NotFound
+			v-else
+			title="Keine Person gefunden"
+			subtitle="Wir konnten leider mit Ihrer Suche keine Person finden."
+		/>
 	</div>
 	
 	
