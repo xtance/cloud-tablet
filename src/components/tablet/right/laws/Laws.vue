@@ -9,29 +9,22 @@ import TableHead from '../../table/TableHead.vue';
 import TableHeadRow from '../../table/TableHeadRow.vue';
 import Bar from '../../bar/Bar.vue';
 
-import { useLawStore } from '@/stores/laws';
+import { useLawStore, lawTypes } from '@/stores/laws';
 import { ref } from 'vue';
 import { computed } from '@vue/reactivity';
 import Search from '../../search/Search.vue';
+import NotFound from '../../notfound/NotFound.vue';
 
 const store = useLawStore();
-const buttons = ['All', 'Straßenverkehrsordnung', 'Drogendialekte', 'Drogendialekte', 'Drogendialekte', 'Drogendialekte', 'Drogendialekte', 'Drogendialekte', 'Drogendialekte', 'Drogendialekte', ];
+const buttons = lawTypes.map(it => it); /* creating a copy of readonly array */
 
 const activeIndex = ref(0);
 const onButtonChange = (index: number) => activeIndex.value = index;
 
 const searchText = ref('');
 const laws = computed(() => {
-
-	if (searchText.value.length) {
-		activeIndex.value = 0;
-		return store.laws.filter(law => law.text.includes(searchText.value));
-	}
-
-	else if (activeIndex.value){
-		return store.laws.filter(law => law.type === buttons[activeIndex.value]);
-	}
-
+	if (searchText.value.length) return store.laws.filter(law => law.text.includes(searchText.value));
+	else if (activeIndex.value) return store.laws.filter(law => law.type === buttons[activeIndex.value]);
 	else return store.laws
 });
 
@@ -58,7 +51,7 @@ function onLawSearch(text: string){
 			@submit="onLawSearch"
 		/>
 
-		<TableContainer>
+		<TableContainer v-if="laws.length">
 			<TableHead>
 				<TableHeadRow>
 					<TableHeadCell css="width: 60%">
@@ -88,5 +81,7 @@ function onLawSearch(text: string){
 				</TableBodyRow>
 			</TableBody>
 		</TableContainer>
+
+		<NotFound v-else title="Keine Law gefunden" subtitle="This is subtitle text that should be changed" />
 	</main>
 </template>

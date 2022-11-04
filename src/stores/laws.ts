@@ -1,9 +1,11 @@
 import { Time } from '@/misc/Time';
 import { defineStore } from 'pinia';
 
+export const lawTypes = ['All', 'Straßenverkehrsordnung', 'Drogendialekte', 'Drogendialekte', 'Drogendialekte', 'Drogendialekte', 'Drogendialekte', 'Drogendialekte', 'Drogendialekte', 'Drogendialekte', ] as const;
+
 export class Law {
 	public jailText: string;
-	constructor(public type: string, public text: string, public fee: number, public jailTime: number) {
+	constructor(public type: typeof lawTypes[number], public text: string, public fee: number, public jailTime: number) {
 		this.jailText = Time.ms2human(jailTime);
 	}
 }

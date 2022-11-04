@@ -34,12 +34,12 @@ function getLicenseImage(license: License): string {
 			v-for="license in licenses"
 			:key="license.type"
 			class="flex justify-center items-center rounded-[8px] cursor-pointer w-[38px] h-[38px] mr-[6px]"
-			:class="license.status ? (license.status === LicenseStatus.ACTIVE ? 'bg-white' : 'bg-[#4052C8]') : 'bg-[#111111]'"
+			:class="license.status ? (license.status === LicenseStatus.ACTIVE ? 'bg-[#4052C8]' : 'bg-white') : 'bg-[#111111]'"
 			@click="canToggleLicense && license.toggleStatus()"
 		>
 			<img
 				:src="getLicenseImage(license)"
-				:class="license.status ? (license.status === LicenseStatus.ACTIVE ? 'invert' : '') : 'opacity-60'"
+				:class="license.status ? (license.status === LicenseStatus.ACTIVE ? '' : 'invert') : 'opacity-60'"
 			/>
 		</div>
 	</div>

@@ -16,10 +16,12 @@ const emit = defineEmits<{
 
 <template>
 	<SideMenu @onClose="emit('onClose')">
-		<SideTitle title="Lizenz entnehmen" subtitle="Entnehme eine Lizenz von der Person" />
-		<InfoLicenses :licenses="licenses" :canToggleLicense="true" />
-		<div class="mb-[180px]"></div>
-		<Button text="Entnehmen" class="bg-[#4052C8]" @click="emit('onLicenseChange', licenses)" />
-		<Button text="Abbrechen" class="bg-[#161616]" @click="emit('onClose')" />
+		<div class="w-[254px]">
+			<SideTitle title="Lizenz entnehmen" subtitle="Entnehme eine Lizenz von der Person" />
+			<InfoLicenses :licenses="licenses" :canToggleLicense="true" />
+			<div class="mb-[180px]"></div>
+			<Button text="Entnehmen" class="bg-[#4052C8]" @click="emit('onLicenseChange', licenses)" />
+			<Button text="Abbrechen" class="bg-[#161616]" @click="emit('onClose')" />
+		</div>
 	</SideMenu>
 </template>

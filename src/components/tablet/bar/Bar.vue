@@ -37,7 +37,7 @@ onMounted(() => {
 
 <style scoped>
 ::-webkit-scrollbar {
-    display: none;
+    display: none !important;
 }
 </style>
 

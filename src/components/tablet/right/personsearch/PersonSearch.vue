@@ -17,6 +17,9 @@ import FileHistory from './FileHistory.vue';
 import ActiveFile from './ActiveFile.vue';
 import { License, LicenseStatus } from './License';
 import EditLicenses from './EditLicenses.vue';
+import FileCharges from './FileCharges.vue';
+import type { Law } from '@/stores/laws';
+import ChangeStatus from './ChangeStatus.vue';
 
 
 function onSubmit(text: string){
@@ -37,6 +40,8 @@ const files = ref<File[]|null>(null);
 const activeFile = ref<File|null>(null);
 const licenses = ref<License[]|null>(null);
 const menuLicenses = ref<License[]|null>(null);
+const fileChargesEnabled = ref<boolean>(false);
+const changeStatusEnabled = ref<boolean>(false);
 
 /* Debugging */
 onMounted(() => fetchPerson(new Person('Matce', 'Fuksusauskas', false, '01.01.1999', false)));
@@ -93,8 +98,6 @@ function fetchFiles(){
 	]
 }
 
-
-
 function fetchLicenses(){
 	licenses.value = [
 		new License('car', LicenseStatus.ACTIVE),
@@ -106,10 +109,34 @@ function fetchLicenses(){
 	]
 }
 
+function changeLicenses(newLicenses: License[]){
+	licenses.value = newLicenses.map(license => license.getCopy());
+	menuLicenses.value = null;
+	/* TODO: Update licenses in database */
+}
+
+function toggleChargesMenu(){
+	fileChargesEnabled.value = !fileChargesEnabled.value;
+}
+
+function toggleStatusMenu(){
+	changeStatusEnabled.value = !changeStatusEnabled.value;
+}
+
+function onChangeStatus(status: boolean, title: string, reason: string){
+	console.log(`[Person] Changed status:`, status, title, reason);
+	toggleStatusMenu();
+}
+
+function onFileCharges(laws: Law[]){
+	console.log(`[Person] Charges:`, laws);
+	toggleChargesMenu();
+}
+
 const buttons = new Map<string, () => void>()
-	.set('Status Andern', () => {})
+	.set('Status Andern', toggleStatusMenu)
 	.set('Fahrzeuge', fetchVehicles)
-	.set('Akte vergeben', () => {})
+	.set('Akte vergeben', toggleChargesMenu)
 	.set('Lizenz entnehmen', openLicenseMenu);
 
 </script>
@@ -161,6 +188,17 @@ const buttons = new Map<string, () => void>()
 			v-if="menuLicenses"
 			:licenses="menuLicenses"
 			@onClose="menuLicenses = null"
+			@onLicenseChange="changeLicenses"
+		/>
+		<FileCharges
+			v-if="fileChargesEnabled"
+			@onClose="toggleChargesMenu"
+			@onFileCharges="onFileCharges"
+		/>
+		<ChangeStatus
+			v-if="changeStatusEnabled"
+			@onClose="toggleStatusMenu"
+			@onChangeStatus="onChangeStatus"
 		/>
 	</div>
 
