@@ -89,12 +89,12 @@ function fetchActiveFile(){
 
 function fetchFiles(){
 	files.value = [
-		new File(7221, 1667570290554, 'Diego Macher', 'Lieutenant', false, 'Falsely Accused'),
-		new File(7001, 1667570290554, 'Diego Macher', 'Lieutenant', true, 'Running'),
-		new File(7221, 1667570290554, 'Diego Macher', 'Lieutenant', true, 'Falsely Accused'),
-		new File(7221, 1667570290554, 'Diego Macher', 'Lieutenant', false, 'Falsely Accused'),
-		new File(7221, 1667570290554, 'Diego Macher', 'Lieutenant', false, 'Falsely Accused'),
-		new File(7221, 1667570290554, 'Diego Macher', 'Lieutenant', false, 'Falsely Accused'),
+		new File(7221, 1667570290554, 'Diego Macher', 'Lieutenant', false, 'Falsely Accused', [1, 2, 3, 4, 5, 6]),
+		new File(7001, 1667570290554, 'Diego Macher', 'Lieutenant', true, 'Running', [3, 4]),
+		new File(7221, 1667570290554, 'Diego Macher', 'Lieutenant', true, 'Falsely Accused', [3, 4]),
+		new File(7221, 1667570290554, 'Diego Macher', 'Lieutenant', false, 'Falsely Accused', [3, 4]),
+		new File(7221, 1667570290554, 'Diego Macher', 'Lieutenant', false, 'Falsely Accused', [3, 4]),
+		new File(7221, 1667570290554, 'Diego Macher', 'Lieutenant', false, 'Falsely Accused', [3, 4]),
 	]
 }
 

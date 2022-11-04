@@ -1,3 +1,5 @@
+import type { Law } from "@/stores/laws";
+
 export class File {
 	constructor(
 		public id: number,
@@ -6,5 +8,6 @@ export class File {
 		public officerRank: string,
 		public status: boolean,
 		public description: string,
+		public lawIDs: number[] = [],
 	){}
 }

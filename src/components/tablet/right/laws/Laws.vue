@@ -25,7 +25,7 @@ const searchText = ref('');
 const laws = computed(() => {
 	if (searchText.value.length) return store.laws.filter(law => law.text.includes(searchText.value));
 	else if (activeIndex.value) return store.laws.filter(law => law.type === buttons[activeIndex.value]);
-	else return store.laws
+	else return store.laws;
 });
 
 function onLawSearch(text: string){

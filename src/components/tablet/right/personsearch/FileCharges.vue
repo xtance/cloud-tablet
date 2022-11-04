@@ -9,6 +9,8 @@ import InfoText from '../../infopanel/InfoText.vue';
 import { Time } from '@/misc/Time';
 import Bar from '../../bar/Bar.vue';
 import Button from '../../misc/Button.vue';
+import Search from '../../search/Search.vue';
+import NotFound from '../../notfound/NotFound.vue';
 
 const store = useLawStore();
 const buttons = lawTypes.map(it => it); /* creating a copy of readonly array */
@@ -16,8 +18,10 @@ const buttons = lawTypes.map(it => it); /* creating a copy of readonly array */
 const activeIndex = ref(0);
 const onButtonChange = (index: number) => activeIndex.value = index;
 
+const searchText = ref('');
 const laws = computed(() => {
-	if (activeIndex.value) return store.laws.filter(law => law.type === buttons[activeIndex.value]);
+	if (searchText.value.length) return store.laws.filter(law => law.text.includes(searchText.value));
+	else if (activeIndex.value) return store.laws.filter(law => law.type === buttons[activeIndex.value]);
 	else return store.laws;
 });
 
@@ -33,6 +37,10 @@ const emit = defineEmits<{
 	(e: 'onFileCharges', laws: Law[]): void,
 }>();
 
+function onLawSearch(text: string){
+	searchText.value = text;
+}
+
 const finalPrice = computed(() => '$ ' + (checkedLaws.value.reduce((value, law) => value + law.fee, 0)));
 const finalJailTime = computed(() => checkedLaws.value.reduce((value, law) => value + law.jailTime, 0));
 
@@ -45,17 +53,14 @@ const finalJailTime = computed(() => checkedLaws.value.reduce((value, law) => va
 			<SideTitle title="Akte vergeben" subtitle="Fill in the information to change a person's status" />
 
 			<div class="flex divide-x bg-white rounded-[10px]">
-
 				<div class="px-5 py-3 w-1/4">
 					<div class="text-[12px] opacity-60 text-[#161616]">Violations</div>
 					<div class="text-[18px] text-black">{{checkedLaws.length}} laws</div>
 				</div>
-
 				<div class="px-5 py-3 w-1/4">
 					<div class="text-[12px] opacity-60 text-[#161616]">Price</div>
 					<div class="text-[18px] text-black">{{finalPrice}}</div>
 				</div>
-
 				<div class="px-5 py-3 w-1/2">
 					<div class="text-[12px] opacity-60 text-[#161616]">Jail Time</div>
 					<div class="text-[18px] text-black">{{finalJailTime ? Time.ms2human(finalJailTime) : 'None'}}</div>
@@ -69,9 +74,15 @@ const finalJailTime = computed(() => checkedLaws.value.reduce((value, law) => va
 				@change="onButtonChange"
 			/>
 
-			<div class="h-[420px] overflow-y-hidden mr-[-30px]">
+			<Search
+				placeholder=""
+				@submit="onLawSearch"
+			/>
+
+			<div class="h-[350px] overflow-y-hidden mr-[-30px]">
 				<div class="h-full overflow-auto pr-[25px] ">
 					<div
+						v-if="laws.length"
 						v-for="(law, index) in laws"
 						:key="index"
 						@click="toggleLaw(law)"
@@ -90,6 +101,8 @@ const finalJailTime = computed(() => checkedLaws.value.reduce((value, law) => va
 							</div>
 						</div>
 					</div>
+
+					<NotFound v-else title="Keine Law gefunden" subtitle="" />
 				</div>
 			</div>
 

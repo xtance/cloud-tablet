@@ -20,11 +20,11 @@ const inputText = ref('');
 			type="text"
 			:placeholder="placeholder || 'Search'"
 			v-model="inputText"
-			class="w-[609px] px-[12px] bg-[#0F0F0F] leading-[50px] rounded-[6px]"
+			class="w-5/6 px-[12px] bg-[#0F0F0F] leading-[50px] rounded-[6px]"
 		/>
 		<button
 			type="submit"
-			class="bg-[#4052C8] rounded-[6px] w-[113px] h-[50px]"
+			class="bg-[#4052C8] rounded-[6px] ml-[10px] flex-grow h-[50px]"
 		>
 			Suchen
 		</button>
