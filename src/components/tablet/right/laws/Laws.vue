@@ -12,13 +12,32 @@ import Bar from '../../bar/Bar.vue';
 import { useLawStore } from '@/stores/laws';
 import { ref } from 'vue';
 import { computed } from '@vue/reactivity';
+import Search from '../../search/Search.vue';
 
 const store = useLawStore();
 const buttons = ['All', 'Straßenverkehrsordnung', 'Drogendialekte', 'Drogendialekte', 'Drogendialekte', 'Drogendialekte', 'Drogendialekte', 'Drogendialekte', 'Drogendialekte', 'Drogendialekte', ];
 
 const activeIndex = ref(0);
 const onButtonChange = (index: number) => activeIndex.value = index;
-const laws = computed(() => activeIndex.value ? store.laws.filter(law => law.type === buttons[activeIndex.value]) : store.laws)
+
+const searchText = ref('');
+const laws = computed(() => {
+
+	if (searchText.value.length) {
+		activeIndex.value = 0;
+		return store.laws.filter(law => law.text.includes(searchText.value));
+	}
+
+	else if (activeIndex.value){
+		return store.laws.filter(law => law.type === buttons[activeIndex.value]);
+	}
+
+	else return store.laws
+});
+
+function onLawSearch(text: string){
+	searchText.value = text;
+}
 </script>
 
 <template>
@@ -32,6 +51,11 @@ const laws = computed(() => activeIndex.value ? store.laws.filter(law => law.typ
 			:buttons="buttons"
 			:active="activeIndex"
 			@change="onButtonChange"
+		/>
+
+		<Search
+			placeholder=""
+			@submit="onLawSearch"
 		/>
 
 		<TableContainer>

@@ -4,6 +4,16 @@ export class Time {
 	static hour = 3.6e+6;
 	static minute = 60000;
 	static second = 1000;
+
+	static getHHMM(ms: number | Date){
+        const date = new Date(ms);
+        return  ('0'+date.getHours()).slice(-2) + ":" + ('0'+date.getMinutes()).slice(-2);
+    }
+
+	static getDDMMYYYY(ms: number | Date){
+        const date = new Date(ms);
+        return  ('0'+date.getDate()).slice(-2) + ":" + ('0'+(date.getMonth()+1)).slice(-2) + ":" + date.getFullYear();
+    }
 	
 	static ms2human(ms: number){
 

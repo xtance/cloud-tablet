@@ -5,10 +5,10 @@ import Wanted from './wanted/Wanted.vue';
 import Employees from './employees/Employees.vue';
 import Laws from './laws/Laws.vue';
 import Background from '@/assets/tablet/Background.png';
-import CitizenSearch from './citizensearch/CitizenSearch.vue';
+import PersonSearch from './personsearch/PersonSearch.vue';
 
 
-const [ citizen, vehicle, wanted, laws, employees ] = tabs;
+const [ person, vehicle, wanted, laws, employees ] = tabs;
 const style = `background-image: url(${Background});`;
 </script>
 
@@ -17,8 +17,8 @@ const style = `background-image: url(${Background});`;
 		class="p-4 w-[792px] h-full px-[30px] pt-[48px] bg-no-repeat bg-right-bottom bg-cover overflow-y-scroll"
 		:style="style"
 	>
-		<TabContainer :thisTab="citizen">
-			<CitizenSearch />
+		<TabContainer :thisTab="person">
+			<PersonSearch />
 		</TabContainer>
 		<TabContainer :thisTab="wanted">
 			<Wanted />
