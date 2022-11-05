@@ -9,13 +9,12 @@ import TableHead from '../../table/TableHead.vue';
 import TableHeadRow from '../../table/TableHeadRow.vue';
 import Bar from '../../bar/Bar.vue';
 
-import { useLawStore, lawTypes } from '@/stores/laws';
 import { ref } from 'vue';
 import { computed } from '@vue/reactivity';
 import Search from '../../search/Search.vue';
 import NotFound from '../../notfound/NotFound.vue';
+import { Law, lawTypes } from '../../models/Law';
 
-const store = useLawStore();
 const buttons = lawTypes.map(it => it); /* creating a copy of readonly array */
 
 const activeIndex = ref(0);
@@ -23,9 +22,9 @@ const onButtonChange = (index: number) => activeIndex.value = index;
 
 const searchText = ref('');
 const laws = computed(() => {
-	if (searchText.value.length) return store.laws.filter(law => law.text.includes(searchText.value));
-	else if (activeIndex.value) return store.laws.filter(law => law.type === buttons[activeIndex.value]);
-	else return store.laws;
+	if (searchText.value.length) return Law.TEST_LAWS.filter(law => law.text.includes(searchText.value));
+	else if (activeIndex.value) return Law.TEST_LAWS.filter(law => law.type === buttons[activeIndex.value]);
+	else return Law.TEST_LAWS;
 });
 
 function onLawSearch(text: string){

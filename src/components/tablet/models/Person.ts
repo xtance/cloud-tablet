@@ -12,4 +12,10 @@ export class Person {
 		public bornDate: string, /* is it a string? */
 		public wantedStatus: boolean,
 	){}
+
+	static TEST_PERSONS = [
+		new Person(435345345, 'Matce', 'Fuksus', false, '01.01.1999', true),
+		new Person(1, 'Matce', 'Fuksusauskas', false, '01.01.1999', false),
+		new Person(2, 'Matce', 'Fuksusauskas', false, '01.01.1999', false),
+	]
 }

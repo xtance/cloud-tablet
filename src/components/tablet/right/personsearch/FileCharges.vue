@@ -3,33 +3,57 @@ import SideMenu from '../../sidemenu/SideMenu.vue';
 import SideTitle from '../../sidemenu/SideTitle.vue';
 
 
-import { useLawStore, lawTypes, Law } from '@/stores/laws';
-import { ref, computed } from 'vue';
+import { ref, computed, toRaw, onMounted } from 'vue';
 import InfoText from '../../infopanel/InfoText.vue';
 import { Time } from '@/misc/Time';
 import Bar from '../../bar/Bar.vue';
 import Button from '../../misc/Button.vue';
 import Search from '../../search/Search.vue';
 import NotFound from '../../notfound/NotFound.vue';
+import { Law, lawTypes } from '../../models/Law';
+import type { File } from '../../models/File';
 
-const store = useLawStore();
 const buttons = lawTypes.map(it => it); /* creating a copy of readonly array */
 
-const activeIndex = ref(0);
-const onButtonChange = (index: number) => activeIndex.value = index;
+let laws = Law.TEST_LAWS; /* the */
+const checkedLaws = ref<Set<Law>>(new Set());
 
-const searchText = ref('');
-const laws = computed(() => {
-	if (searchText.value.length) return store.laws.filter(law => law.text.includes(searchText.value));
-	else if (activeIndex.value) return store.laws.filter(law => law.type === buttons[activeIndex.value]);
-	else return store.laws;
+const onButtonChange = (index: number) => laws = (index ? Law.TEST_LAWS.filter(law => law.type === buttons[index]) : Law.TEST_LAWS);
+const onLawSearch = (text: string) => laws = (text ?  Law.TEST_LAWS.filter(law => law.text.includes(text)) : Law.TEST_LAWS);
+
+
+const props = defineProps<{
+	/* the current file is defined when clicking "edit", and undefined when using "file charges" button */
+	activeFile: File|null,
+}>();
+
+/* in case there's a file, we should update checked laws */
+onMounted(() => {
+	if (!props.activeFile) return;
+	props.activeFile.fetchViolations();
+	props.activeFile.violations?.forEach(vio => {
+		if (!vio.law) return;
+		checkedLaws.value.add(vio.law);
+	});
+	console.log(`[Checked laws] `, checkedLaws.value);
 });
 
-const checkedLaws = ref<Law[]>([]);
-
 function toggleLaw(law: Law){
-	if (checkedLaws.value.includes(law)) return checkedLaws.value = checkedLaws.value.filter(l => l !== law);
-	checkedLaws.value.push(law);
+	if (checkedLaws.value.has(law)) checkedLaws.value.delete(law);
+	else checkedLaws.value.add(law);
+	calc();
+}
+
+const finalPrice = ref(0);
+const finalJailTime = ref(0);
+
+function calc(){
+	finalPrice.value = 0;
+	finalJailTime.value = 0;
+	for (const law of checkedLaws.value){
+		finalPrice.value += law.fee;
+		finalJailTime.value += law.jailTime;
+	}
 }
 
 const emit = defineEmits<{
@@ -37,12 +61,6 @@ const emit = defineEmits<{
 	(e: 'onFileCharges', laws: Law[]): void,
 }>();
 
-function onLawSearch(text: string){
-	searchText.value = text;
-}
-
-const finalPrice = computed(() => '$ ' + (checkedLaws.value.reduce((value, law) => value + law.fee, 0)));
-const finalJailTime = computed(() => checkedLaws.value.reduce((value, law) => value + law.jailTime, 0));
 
 
 </script>
@@ -55,11 +73,11 @@ const finalJailTime = computed(() => checkedLaws.value.reduce((value, law) => va
 			<div class="flex divide-x bg-white rounded-[10px]">
 				<div class="px-5 py-3 w-1/4">
 					<div class="text-[12px] opacity-60 text-[#161616]">Violations</div>
-					<div class="text-[18px] text-black">{{checkedLaws.length}} laws</div>
+					<div class="text-[18px] text-black">{{checkedLaws.size}} laws</div>
 				</div>
 				<div class="px-5 py-3 w-1/4">
 					<div class="text-[12px] opacity-60 text-[#161616]">Price</div>
-					<div class="text-[18px] text-black">{{finalPrice}}</div>
+					<div class="text-[18px] text-black">$ {{finalPrice}}</div>
 				</div>
 				<div class="px-5 py-3 w-1/2">
 					<div class="text-[12px] opacity-60 text-[#161616]">Jail Time</div>
@@ -70,7 +88,6 @@ const finalJailTime = computed(() => checkedLaws.value.reduce((value, law) => va
 
 			<Bar
 				:buttons="buttons"
-				:active="activeIndex"
 				@change="onButtonChange"
 			/>
 
@@ -94,9 +111,9 @@ const finalJailTime = computed(() => checkedLaws.value.reduce((value, law) => va
 
 						<div
 							class="rounded-[5px] w-[20px] h-[20px] flex justify-center items-center"
-							:class="checkedLaws.includes(law) ? 'bg-[#8CC840]' : 'bg-white opacity-5'"
+							:class="checkedLaws.has(law) ? 'bg-[#8CC840]' : 'bg-white opacity-5'"
 						>
-							<div v-if="checkedLaws.includes(law)" class="rounded-full w-[8px] h-[8px] bg-white">
+							<div v-if="checkedLaws.has(law)" class="rounded-full w-[8px] h-[8px] bg-white">
 
 							</div>
 						</div>
@@ -108,7 +125,7 @@ const finalJailTime = computed(() => checkedLaws.value.reduce((value, law) => va
 
 			<div class="flex justify-end gap-4 mt-[20px]">
 				<Button class="w-1/3 bg-[#161616] mb-0" @click="emit('onClose')" text="Cancel" />
-				<Button class="w-1/3 bg-[#4052C8] mb-0" @click="emit('onFileCharges', checkedLaws)" text="File Charges" />
+				<Button class="w-1/3 bg-[#4052C8] mb-0" @click="emit('onFileCharges', Array.from(checkedLaws))" text="File Charges" />
 			</div>
 		</div>
 		

@@ -31,3 +31,7 @@ export const useTabStore = defineStore({
 		},
 	},
 });
+
+export const openProfileTab = (id: number) => {
+	useTabStore().setTab(tabs[0], id);
+}

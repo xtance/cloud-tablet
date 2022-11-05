@@ -14,7 +14,7 @@ const currentFile = ref<VehicleFile|null>(null);
 </script>
 
 <template>
-	<div class="opacity-60 mb-[18px]">Aktenverlauf</div>
+	<div class="opacity-60 my-[18px]">Aktenverlauf</div>
 	<div v-for="file in files">
 		<div class="flex justify-between items-center bg-[#111111] rounded-[10px] px-[16px] py-[16px] mb-[10px]">
 			<InfoTripleText first="Aktennummer" :second="'#'+file.id" third="" />

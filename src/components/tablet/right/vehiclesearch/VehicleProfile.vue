@@ -4,16 +4,15 @@ import VehicleChangeStatus from './VehicleChangeStatus.vue';
 import InfoText from '../../infopanel/InfoText.vue';
 import InfoButtons from '../../infopanel/InfoButtons.vue';
 import type { Vehicle } from '../../models/Vehicle';
-import { tabs, useTabStore } from '@/stores/tab';
+import { openProfileTab } from '@/stores/tab';
 import { ref } from 'vue';
 
 
 defineProps<{
 	vehicle: Vehicle,
+	canSwitchToProfile: boolean,
 }>();
 
-const tabStore = useTabStore();
-const switchToProfileSearch = (id: number) => tabStore.setTab(tabs[0], id);
 const changeStatusEnabled = ref(false);
 
 const buttons = new Map<string, () => void>().set('Status Andern', toggleStatus);
@@ -35,7 +34,7 @@ function onChangeStatus(status: boolean, title: string, reason: string){
 			<div class="flex justify-between">
 				<div class="">
 					<InfoText desc="Name" :text="vehicle.name" />
-					<InfoText desc="Vehicle Owner" text="TODO (Owner Name) ›" @click="switchToProfileSearch(vehicle.ownerID)" class="cursor-pointer" />
+					<InfoText desc="Vehicle Owner" text="TODO (Owner Name)" @click="canSwitchToProfile && openProfileTab(vehicle.ownerID)" class="cursor-pointer" />
 				</div>
 				<div class="pl-4">
 					<InfoText desc="Number plate" :text="vehicle.numberPlate" />

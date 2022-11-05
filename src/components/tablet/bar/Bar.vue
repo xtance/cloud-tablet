@@ -4,8 +4,14 @@ import BarButton from './BarButton.vue';
 
 defineProps<{
 	buttons: string[],
-	active: number,
 }>();
+
+
+const index = ref(0);
+const onChange = (_index: number) => {
+	index.value = _index;
+	emit('change', _index);
+}
 
 const emit = defineEmits<{
 	(e: 'change', index: number): void
@@ -21,15 +27,15 @@ onMounted(() => {
 		if (!root.value) return;
 		root.value.scrollLeft += e.deltaY > 0 ? pixels : -pixels;
 		e.preventDefault();
-	});
+	}, { passive: false });
 });
 </script>
 
 <template>
 	<div class="overflow-x-hidden mr-[-30px]">
 		<div class="flex justify-start pb-[20px] pt-[20px] overflow-x-scroll" ref="root">
-			<div v-for="(text, index) in buttons" :key="index">
-				<BarButton v-on:click="emit('change', index)" :text="text" :isActive="index === active" />
+			<div v-for="(text, _index) in buttons" :key="_index">
+				<BarButton v-on:click="onChange(_index)" :text="text" :isActive="_index === index" />
 			</div>
 		</div>
 	</div>

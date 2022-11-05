@@ -18,20 +18,16 @@ import ActiveFile from './ActiveFile.vue';
 import { License, LicenseStatus } from '../../models/License';
 import EditLicenses from './EditLicenses.vue';
 import FileCharges from './FileCharges.vue';
-import type { Law } from '@/stores/laws';
 import ChangeStatus from './ChangeStatus.vue';
 import { tabs, useTabStore } from '@/stores/tab';
-
-const TEST_PERSONS = [
-	new Person(435345345, 'Matce', 'Fuksus', false, '01.01.1999', true),
-	new Person(1, 'Matce', 'Fuksusauskas', false, '01.01.1999', false),
-	new Person(2, 'Matce', 'Fuksusauskas', false, '01.01.1999', false),
-];
+import type { Law } from '../../models/Law';
+import VehicleFileHistory from '../vehiclesearch/VehicleFileHistory.vue';
+import VehicleProfile from '../vehiclesearch/VehicleProfile.vue';
 
 function onSubmit(text: string){
 	console.log(`[CitizenSearch] Searching for ${text}`);
 	if (!text) return; /* TODO: if there is a notification system already, display an error. */
-	persons.value = TEST_PERSONS.filter(person => (person.firstName + ' ' + person.lastName).includes(text));
+	persons.value = Person.TEST_PERSONS.filter(person => (person.firstName + ' ' + person.lastName).includes(text));
 }
 
 const persons = ref<Person[]|null>(null);
@@ -45,17 +41,20 @@ const menuLicenses = ref<License[]|null>(null);
 const fileChargesEnabled = ref<boolean>(false);
 const changeStatusEnabled = ref<boolean>(false);
 
-/* Debugging */
-onMounted(() => {
-	const tabStore = useTabStore();
-	if (!tabStore.currentArg) return fetchPerson(435345345);
-	fetchPerson(tabStore.currentArg);
-	tabStore.currentArg = null;
-});
-
+const tabStore = useTabStore();
 const backToVehicleList = () => currentVehicle.value = null;
 const backToPersonProfile = () => vehicles.value = null;
 const backToPersonSearch = () => currentPerson.value = null;
+
+/* Every tab can change the currentArg, thus opening the profile page  */
+tabStore.$subscribe((mutation, state) => {
+	if (!state.currentArg) return;
+	backToVehicleList();
+	backToPersonProfile();
+	backToPersonSearch();
+	fetchPerson(state.currentArg);
+	tabStore.currentArg = null;
+});
 
 /* This map is explained in HistoryBar.vue, basically arrays of functions to reset the state */
 const history = computed(() => {
@@ -68,7 +67,7 @@ const history = computed(() => {
 });
 
 function fetchPerson(id: number){
-	currentPerson.value = TEST_PERSONS.find(person => person.id === id) || null;
+	currentPerson.value = Person.TEST_PERSONS.find(person => person.id === id) || null;
 	fetchActiveFile();
 	fetchFiles();
 	fetchLicenses();
@@ -84,6 +83,7 @@ function fetchVehicles(){
 	]
 }
 
+
 function openLicenseMenu(){
 	if (!licenses.value) return; /* TODO: display an error, license menu can't be opened if there are no licenses */
 	menuLicenses.value = licenses.value.map(license => license.getCopy());
@@ -91,19 +91,17 @@ function openLicenseMenu(){
 }
 
 function fetchActiveFile(){
-	activeFile.value = new File(7221, 1667570290554, 'Diego Macher', 'Lieutenant', false, 'Falsely Accused');
+	activeFile.value = File.TEST_FILES[0];
 }
 
 function fetchFiles(){
-	files.value = [
-		new File(7221, 1667570290554, 'Diego Macher', 'Lieutenant', false, 'Falsely Accused', [1, 2, 3, 4, 5, 6]),
-		new File(7001, 1667570290554, 'Diego Macher', 'Lieutenant', true, 'Running', [3, 4]),
-		new File(7221, 1667570290554, 'Diego Macher', 'Lieutenant', true, 'Falsely Accused', [3, 4]),
-		new File(7221, 1667570290554, 'Diego Macher', 'Lieutenant', false, 'Falsely Accused', [3, 4]),
-		new File(7221, 1667570290554, 'Diego Macher', 'Lieutenant', false, 'Falsely Accused', [3, 4]),
-		new File(7221, 1667570290554, 'Diego Macher', 'Lieutenant', false, 'Falsely Accused', [3, 4]),
-	];
+	files.value = File.TEST_FILES;
 	console.log(`Files`, files.value);
+}
+
+function fetchVehicle(vehicle: Vehicle){
+	vehicle.fetchFiles();
+	currentVehicle.value = vehicle;
 }
 
 function fetchLicenses(){
@@ -157,7 +155,22 @@ const buttons = new Map<string, () => void>()
  -->
 <template>
 
-	<div v-if="vehicles">
+	<div v-if="currentVehicle">
+		<HistoryBar
+			title="Fahrzeugsuche"
+			:history="history"
+		/>
+		<VehicleProfile
+			:vehicle="currentVehicle"
+			:canSwitchToProfile="false"
+		/>
+		<VehicleFileHistory
+			v-if="currentVehicle.files"
+			:files="currentVehicle.files"
+		/>
+	</div>
+
+	<div v-else-if="vehicles">
 		<HistoryBar
 			title="Personensuche"
 			:history="history"
@@ -165,7 +178,7 @@ const buttons = new Map<string, () => void>()
 		<VehicleList
 			v-if="vehicles.length"
 			:vehicles="vehicles"
-			@setVehicle="(vehicle) => currentVehicle = vehicle"
+			@setVehicle="fetchVehicle"
 		/>
 		<NotFound
 			v-else
@@ -187,6 +200,7 @@ const buttons = new Map<string, () => void>()
 		<ActiveFile
 			v-if="activeFile"
 			:file="activeFile"
+			@onActiveFileOpened="toggleChargesMenu"
 		/>
 		<FileHistory
 			v-if="files"
@@ -200,6 +214,7 @@ const buttons = new Map<string, () => void>()
 		/>
 		<FileCharges
 			v-if="fileChargesEnabled"
+			:activeFile="activeFile"
 			@onClose="toggleChargesMenu"
 			@onFileCharges="onFileCharges"
 		/>

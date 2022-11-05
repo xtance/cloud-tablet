@@ -7,10 +7,8 @@ import TableBodyCell from '../../table/TableBodyCell.vue';
 import TableContainer from '../../table/TableContainer.vue';
 import TableHead from '../../table/TableHead.vue';
 import TableHeadRow from '../../table/TableHeadRow.vue';
-import { useEmployeeStore } from '@/stores/employees';
-
-const tableHead = ['Employee Name', 'Rank', 'Activity', 'Status', 'Gehalt'];
-const store = useEmployeeStore();
+import { Employee } from '../../models/Employee';
+import { openProfileTab } from '@/stores/tab';
 </script>
 
 <template>
@@ -22,14 +20,14 @@ const store = useEmployeeStore();
 
 		<TableContainer>
 			<TableHead>
-				<TableHeadRow v-for="head in tableHead">
+				<TableHeadRow v-for="head in ['Employee Name', 'Rank', 'Activity', 'Status', 'Gehalt']">
 					<TableHeadCell>
 						{{head}}
 					</TableHeadCell>
 				</TableHeadRow>
 			</TableHead>
 			<TableBody>
-				<TableBodyRow v-for="emp in store.employees">
+				<TableBodyRow v-for="emp, index in Employee.TEST_EMPLOYEES" :key="index" @click="openProfileTab(emp.id)">
 					<TableBodyCell>
 						{{emp.name}}
 					</TableBodyCell>

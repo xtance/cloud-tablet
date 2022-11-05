@@ -8,6 +8,10 @@ import FileIconContainer from './FileIconContainer.vue';
 defineProps<{
 	file: File,
 }>();
+
+const emit = defineEmits<{
+	(e: 'onActiveFileOpened'): void
+}>();
 </script>
 
 <template>
@@ -15,9 +19,9 @@ defineProps<{
 		<div class="opacity-60 mb-[18px]">Offene Akte</div>
 		<div class="flex justify-between items-center bg-[#111111] rounded-[10px] px-[16px] py-[16px]">
 			<InfoTripleText first="Aktennummer" :second="'#'+file.id" third="" />
-			<InfoTripleText first="Datum" :second="Time.getDDMMYYYY(file.date)" :third="Time.getHHMM(file.date)" />
+			<InfoTripleText first="Datum" :second="Time.getDDMMYYYY(file.createdDate)" :third="Time.getHHMM(file.createdDate)" />
 			<InfoTripleText first="Aktennummer" :second="file.status ? 'Gesucht' : 'Nicht gesucht'" :third="file.description" />
-			<FileIconContainer :src="Edit" css="background-color: #4052C8" />
+			<FileIconContainer @click="emit('onActiveFileOpened')" :src="Edit" css="background-color: #4052C8" />
 		</div>
 	</div>
 </template>
