@@ -6,6 +6,7 @@ import Employees from './employees/Employees.vue';
 import Laws from './laws/Laws.vue';
 import Background from '@/assets/tablet/Background.png';
 import PersonSearch from './personsearch/PersonSearch.vue';
+import VehicleSearch from './vehiclesearch/VehicleSearch.vue';
 
 
 const [ person, vehicle, wanted, laws, employees ] = tabs;
@@ -19,6 +20,9 @@ const style = `background-image: url(${Background});`;
 	>
 		<TabContainer :thisTab="person">
 			<PersonSearch />
+		</TabContainer>
+		<TabContainer :thisTab="vehicle">
+			<VehicleSearch />
 		</TabContainer>
 		<TabContainer :thisTab="wanted">
 			<Wanted />

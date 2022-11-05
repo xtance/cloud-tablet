@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 
 export class Employee {
-	constructor(public name: string, public rank: string, public activity: boolean, public status: boolean) { }
+	constructor(public name: string, public rank: string, public activity: boolean, public status: boolean, public wage: number = 100) { }
 }
 
 export const useEmployeeStore = defineStore({

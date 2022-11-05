@@ -5,8 +5,8 @@ import InfoText from '../../infopanel/InfoText.vue';
 import InfoButtons from '../../infopanel/InfoButtons.vue';
 import InfoLicenses from '../../infopanel/InfoLicenses.vue';
 import NoImage from '@/assets/tablet/NoImage.png';
-import type { License } from './License';
-import type { Person } from './Person';
+import type { License } from '../../models/License';
+import type { Person } from '../../models/Person';
 
 defineProps<{
 	person: Person,

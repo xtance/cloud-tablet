@@ -20,10 +20,14 @@ export const tabs: Tab[] = [
 
 export const useTabStore = defineStore({
 	id: 'tabStore',
-	state: () => ({ currentTab: tabs[0] }),
+	state: () => ({
+		currentTab: tabs[0],
+		currentArg: null,
+	}),
 	actions: {
-		setTab(newTab: Tab) {
+		setTab(newTab: Tab, arg?: any) {
 			this.$state.currentTab = newTab;
+			this.$state.currentArg = arg;
 		},
 	},
 });

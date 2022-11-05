@@ -6,7 +6,7 @@ import TableBodyCell from '../../table/TableBodyCell.vue';
 import TableContainer from '../../table/TableContainer.vue';
 import TableHead from '../../table/TableHead.vue';
 import TableHeadRow from '../../table/TableHeadRow.vue';
-import type { Vehicle } from './Vehicle';
+import type { Vehicle } from '../../models/Vehicle';
 
 defineProps<{
 	vehicles: Vehicle[]

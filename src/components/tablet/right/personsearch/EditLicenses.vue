@@ -3,7 +3,7 @@ import InfoLicenses from '../../infopanel/InfoLicenses.vue';
 import SideMenu from '../../sidemenu/SideMenu.vue';
 import SideTitle from '../../sidemenu/SideTitle.vue';
 import Button from '../../misc/Button.vue';
-import type { License } from './License';
+import type { License } from '../../models/License';
 defineProps<{
 	licenses: License[];
 }>();

@@ -2,7 +2,7 @@
 import InfoTripleText from '../../infopanel/InfoTripleText.vue';
 import { Time } from '../../../../misc/Time';
 import Eye from '@/assets/tablet/Eye.png';
-import type { File } from './File';
+import type { File } from '../../models/File';
 import FileIconContainer from './FileIconContainer.vue';
 import { ref } from 'vue';
 import SideMenu from '../../sidemenu/SideMenu.vue';

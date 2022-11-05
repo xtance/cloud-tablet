@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { License, LicenseStatus } from '../right/personsearch/License';
+import { License, LicenseStatus } from '../models/License';
 import License_Weapon from '@/assets/tablet/License_Weapon.png';
 import License_Plane from '@/assets/tablet/License_Plane.png';
 import License_Ship from '@/assets/tablet/License_Ship.png';

@@ -6,42 +6,39 @@ import TableBodyCell from '../../table/TableBodyCell.vue';
 import TableContainer from '../../table/TableContainer.vue';
 import TableHead from '../../table/TableHead.vue';
 import TableHeadRow from '../../table/TableHeadRow.vue';
-import type { Person } from '../../models/Person';
+import type { Vehicle } from '../../models/Vehicle';
 
 defineProps<{
-	persons: Person[]
+	vehicles: Vehicle[]
 }>();
 
 const emit = defineEmits<{
-	(e: 'setPerson', person: Person): void
+	(e: 'setVehicle', vehicle: Vehicle): void
 }>();
 </script>
 
 <template>
-	<TableContainer v-if="persons.length">
+	<TableContainer v-if="vehicles.length">
 		<TableHead>
-			<TableHeadRow v-for="head in ['Vorname', 'Nachname', 'Geschlecht', 'Geburtstag', 'Status']">
+			<TableHeadRow v-for="head in ['ID', 'Name', 'Numberplate', 'Status']">
 				<TableHeadCell>
 					{{head}}
 				</TableHeadCell>
 			</TableHeadRow>
 		</TableHead>
 		<TableBody>
-			<TableBodyRow v-for="person in persons" @click="emit('setPerson', person)" :css="person.wantedStatus ? 'background-color: #C84040' : ''">
+			<TableBodyRow v-for="vehicle in vehicles" @click="emit('setVehicle', vehicle)" :css="vehicle.status ? 'background-color: #C84040' : ''">
 				<TableBodyCell>
-					{{person.firstName}}
+					#{{vehicle.id}}
 				</TableBodyCell>
 				<TableBodyCell>
-					{{person.lastName}}
+					{{vehicle.name}}
 				</TableBodyCell>
 				<TableBodyCell>
-					{{person.gender ? 'Female' : 'Male'}}
+					{{vehicle.numberPlate}}
 				</TableBodyCell>
 				<TableBodyCell>
-					{{person.bornDate}}
-				</TableBodyCell>
-				<TableBodyCell>
-					{{person.wantedStatus ? 'Wanted' : 'Not Wanted'}}
+					{{vehicle.status ? 'Wanted' : 'Not Wanted'}}
 				</TableBodyCell>
 			</TableBodyRow>
 		</TableBody>

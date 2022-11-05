@@ -9,7 +9,7 @@ import TableHead from '../../table/TableHead.vue';
 import TableHeadRow from '../../table/TableHeadRow.vue';
 import { useEmployeeStore } from '@/stores/employees';
 
-const tableHead = ['Employee Name', 'Rank', 'Activity', 'Status'];
+const tableHead = ['Employee Name', 'Rank', 'Activity', 'Status', 'Gehalt'];
 const store = useEmployeeStore();
 </script>
 
@@ -53,6 +53,9 @@ const store = useEmployeeStore();
 						<div v-else class="opacity-60">
 							Off-Duty
 						</div>
+					</TableBodyCell>
+					<TableBodyCell>
+						$ {{emp.wage}}
 					</TableBodyCell>
 				</TableBodyRow>
 			</TableBody>

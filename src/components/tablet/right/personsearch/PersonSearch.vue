@@ -4,35 +4,37 @@ import Search from '../../search/Search.vue';
 import NotFound from '../../notfound/NotFound.vue';
 
 import { onMounted, ref } from 'vue';
-import { Person } from './Person';
+import { Person } from '../../models/Person';
 
-import Profile from './PersonProfile.vue';
+import PersonProfile from './PersonProfile.vue';
 import VehicleList from './VehicleList.vue';
 import HistoryBar from '../../historybar/HistoryBar.vue';
 import { computed } from '@vue/reactivity';
-import { Vehicle } from './Vehicle';
+import { Vehicle } from '../../models/Vehicle';
 import PersonList from './PersonList.vue';
-import { File } from './File';
+import { File } from '../../models/File';
 import FileHistory from './FileHistory.vue';
 import ActiveFile from './ActiveFile.vue';
-import { License, LicenseStatus } from './License';
+import { License, LicenseStatus } from '../../models/License';
 import EditLicenses from './EditLicenses.vue';
 import FileCharges from './FileCharges.vue';
 import type { Law } from '@/stores/laws';
 import ChangeStatus from './ChangeStatus.vue';
+import { tabs, useTabStore } from '@/stores/tab';
 
+const TEST_PERSONS = [
+	new Person(435345345, 'Matce', 'Fuksus', false, '01.01.1999', true),
+	new Person(1, 'Matce', 'Fuksusauskas', false, '01.01.1999', false),
+	new Person(2, 'Matce', 'Fuksusauskas', false, '01.01.1999', false),
+];
 
 function onSubmit(text: string){
 	console.log(`[CitizenSearch] Searching for ${text}`);
 	if (!text) return; /* TODO: if there is a notification system already, display an error. */
-	persons.value = [
-		new Person('Matce', 'Fuksus', false, '01.01.1999', true),
-		new Person('Matce', 'Fuksusauskas', false, '01.01.1999', false),
-		new Person('Matce', 'Fuksusauskas', false, '01.01.1999', false),
-	];
+	persons.value = TEST_PERSONS.filter(person => (person.firstName + ' ' + person.lastName).includes(text));
 }
 
-const persons = ref([] as Person[]);
+const persons = ref<Person[]|null>(null);
 const currentPerson = ref<Person|null>(null);
 const vehicles = ref<Vehicle[] | null>(null);
 const currentVehicle = ref<Vehicle|null>(null);
@@ -44,7 +46,12 @@ const fileChargesEnabled = ref<boolean>(false);
 const changeStatusEnabled = ref<boolean>(false);
 
 /* Debugging */
-onMounted(() => fetchPerson(new Person('Matce', 'Fuksusauskas', false, '01.01.1999', false)));
+onMounted(() => {
+	const tabStore = useTabStore();
+	if (!tabStore.currentArg) return fetchPerson(435345345);
+	fetchPerson(tabStore.currentArg);
+	tabStore.currentArg = null;
+});
 
 const backToVehicleList = () => currentVehicle.value = null;
 const backToPersonProfile = () => vehicles.value = null;
@@ -60,8 +67,8 @@ const history = computed(() => {
 	return map;
 });
 
-function fetchPerson(person: Person){
-	currentPerson.value = person;
+function fetchPerson(id: number){
+	currentPerson.value = TEST_PERSONS.find(person => person.id === id) || null;
 	fetchActiveFile();
 	fetchFiles();
 	fetchLicenses();
@@ -69,11 +76,11 @@ function fetchPerson(person: Person){
 
 function fetchVehicles(){
 	vehicles.value = [
-		new Vehicle('Porsche Taycan', 412561, '41215854', true),
-		new Vehicle('Porsche Taycan', 412561, '41215854', false),
-		new Vehicle('Porsche Taycan', 412561, '41215854', false),
-		new Vehicle('Porsche Taycan', 412561, '41215854', true),
-		new Vehicle('Porsche Taycan', 412561, '41215854', true),
+		new Vehicle(412561, 1, 'Porsche Taycan', '41215854', true),
+		new Vehicle(412561, 2, 'Porsche Taycan', '41215854', false),
+		new Vehicle(412561, 3, 'Porsche Taycan', '41215854', false),
+		new Vehicle(412561, 4, 'Porsche Taycan', '41215854', true),
+		new Vehicle(412561, 5, 'Porsche Taycan', '41215854', true),
 	]
 }
 
@@ -95,7 +102,8 @@ function fetchFiles(){
 		new File(7221, 1667570290554, 'Diego Macher', 'Lieutenant', false, 'Falsely Accused', [3, 4]),
 		new File(7221, 1667570290554, 'Diego Macher', 'Lieutenant', false, 'Falsely Accused', [3, 4]),
 		new File(7221, 1667570290554, 'Diego Macher', 'Lieutenant', false, 'Falsely Accused', [3, 4]),
-	]
+	];
+	console.log(`Files`, files.value);
 }
 
 function fetchLicenses(){
@@ -171,7 +179,7 @@ const buttons = new Map<string, () => void>()
 			title="Personenakte"
 			:history="history"
 		/>
-		<Profile
+		<PersonProfile
 			:person="currentPerson"
 			:buttons="buttons"
 			:licenses="licenses"
@@ -208,12 +216,12 @@ const buttons = new Map<string, () => void>()
 		<Search @submit="onSubmit" placeholder="Bitte gebe ein Namen ein" />
 
 		<PersonList
-			v-if="persons.length"
+			v-if="persons && persons.length"
 			:persons="persons"
 			@setPerson="(person) => currentPerson = person"
 		/>
 		<NotFound
-			v-else
+			v-else-if="persons && !persons.length"
 			title="Keine Person gefunden"
 			subtitle="Wir konnten leider mit Ihrer Suche keine Person finden."
 		/>

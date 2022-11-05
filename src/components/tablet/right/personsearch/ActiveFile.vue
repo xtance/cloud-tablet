@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { File } from './File';
+import type { File } from '../../models/File';
 import { Time } from '../../../../misc/Time';
 import InfoTripleText from '../../infopanel/InfoTripleText.vue';
 import Edit from '@/assets/tablet/Edit.png';
@@ -21,3 +21,4 @@ defineProps<{
 		</div>
 	</div>
 </template>
+
